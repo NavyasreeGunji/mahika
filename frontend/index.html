@@ -607,8 +607,8 @@
             }
 
             container.innerHTML = filteredProducts.map(product => {
-                const images = product.images || [product.imageUrl];
-                const mainImage = Array.isArray(images) ? images[0] : images;
+                const images = Array.isArray(product.images) ? product.images : (product.images ? [product.images] : [product.imageUrl]);
+                const mainImage = images[0];
                 const sizes = product.sizes || [];
                 const isInWishlist = wishlist.some(item => item.id === product.id);
                 return `
@@ -616,6 +616,10 @@
                     <div style="position: relative;">
                         <button class="wishlist-btn" onclick="toggleWishlist(${product.id})" id="wish-${product.id}">${isInWishlist ? '♥' : '♡'}</button>
                         <img src="${mainImage || 'https://via.placeholder.com/300x400/f5f5f5/333?text=' + product.name}" alt="${product.name}" id="img-${product.id}">
+                        ${images.length > 1 ? `
+                        <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px;">
+                            ${images.map((_, idx) => `<span id="dot-${product.id}-${idx}" onclick="changeImage(${product.id}, ${idx})" style="width: 10px; height: 10px; border-radius: 50%; background: ${idx === 0 ? '#4a90e2' : 'rgba(255,255,255,0.5)'}; cursor: pointer; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>`).join('')}
+                        </div>` : ''}
                     </div>
                     <div class="product-info">
                         <h3>${product.name}</h3>
@@ -995,7 +999,7 @@
                 // Update dots
                 images.forEach((_, idx) => {
                     const dot = document.getElementById(`dot-${productId}-${idx}`);
-                    if (dot) dot.style.background = idx === imageIndex ? '#8b4513' : '#ccc';
+                    if (dot) dot.style.background = idx === imageIndex ? '#4a90e2' : 'rgba(255,255,255,0.5)';
                 });
             }
         }
