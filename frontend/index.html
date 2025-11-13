@@ -11,10 +11,12 @@
             box-sizing: border-box;
         }
 
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #fff;
-            color: #333;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
             margin: 0;
         }
 
@@ -33,20 +35,45 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-bottom: 3px solid #9b59b6;
-            padding: 15px 40px;
+            background: linear-gradient(135deg, #001f3f 0%, #000 100%);
+            border-bottom: 2px solid #1e3a5f;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            min-height: 80px;
         }
 
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin: 0;
-            color: white;
+        .header .logo-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header .logo-left {
+            width: 90px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .header .logo-center {
+            width: 150px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .header .logo-right {
+            width: 150px;
+            height: auto;
+            object-fit: contain;
+            margin-top: 15px;
+        }
+
+        .header .logo-extra {
+            width: 110px;
+            height: auto;
+            object-fit: contain;
         }
 
         .header-icons {
@@ -61,31 +88,36 @@
             font-size: 1.3rem;
             cursor: pointer;
             position: relative;
-            color: white;
+            color: #4a90e2;
+            transition: color 0.3s ease;
+        }
+
+        .header-icons button:hover {
+            color: #fff;
         }
 
         .search-bar {
             padding: 8px 15px;
-            border: 1px solid white;
+            border: 1px solid #1e3a5f;
             border-radius: 20px;
             width: 250px;
             font-size: 0.9rem;
-            background: rgba(255,255,255,0.2);
-            color: white;
+            background: rgba(30, 58, 95, 0.3);
+            color: #e0e0e0;
         }
 
         .search-bar::placeholder {
-            color: rgba(255,255,255,0.8);
+            color: #6a8caf;
         }
 
         .nav {
-            background: #9b59b6;
+            background: #000;
             padding: 15px 40px;
             display: flex;
             justify-content: center;
             gap: 40px;
             flex-wrap: wrap;
-            border-bottom: 1px solid #764ba2;
+            border-bottom: 1px solid #1e3a5f;
         }
 
         .nav button {
@@ -93,7 +125,7 @@
             border: none;
             border-bottom: 2px solid transparent;
             background: transparent;
-            color: white;
+            color: #6a8caf;
             font-family: 'Arial', sans-serif;
             font-weight: 500;
             cursor: pointer;
@@ -104,7 +136,8 @@
         }
 
         .nav button:hover, .nav button.active {
-            border-bottom: 2px solid white;
+            color: #4a90e2;
+            border-bottom: 2px solid #4a90e2;
         }
 
         .products {
@@ -112,23 +145,25 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             padding: 40px;
-            background: #e6d9f5;
+            background: #0a0a0a;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .product-card {
-            background: white;
-            border: none;
+            background: #000;
+            border: 1px solid #1e3a5f;
             padding: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
             text-align: center;
             overflow: hidden;
             position: relative;
         }
 
         .product-card:hover {
-            opacity: 0.9;
+            border-color: #4a90e2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.2);
         }
 
         .product-card img {
@@ -143,7 +178,7 @@
         }
 
         .product-card h3 {
-            color: #333;
+            color: #e0e0e0;
             margin: 0 0 5px 0;
             font-size: 0.95rem;
             font-weight: 400;
@@ -159,7 +194,7 @@
         .price {
             font-size: 1rem !important;
             font-weight: 600 !important;
-            color: #000 !important;
+            color: #fff !important;
             margin: 8px 0 !important;
         }
 
@@ -167,35 +202,37 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: white;
-            border: none;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #1e3a5f;
             width: 35px;
             height: 35px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.2rem;
+            color: #4a90e2;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
         .add-to-cart-btn {
             width: 100%;
             padding: 12px;
-            background: #9b59b6;
-            color: white;
+            background: #4a90e2;
+            color: #fff;
             border: none;
             font-family: 'Arial', sans-serif;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .add-to-cart-btn:hover {
-            background: #764ba2;
+            background: #357abd;
+            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.4);
         }
 
         .admin-form {
@@ -274,18 +311,21 @@
 
         .filter-section {
             padding: 20px 40px;
-            background: #e6d9f5;
+            background: #0a0a0a;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #d0b3e6;
+            border-bottom: 1px solid #1e3a5f;
+            color: #6a8caf;
         }
 
         .filter-section select {
             padding: 8px 15px;
-            border: 1px solid #ddd;
+            border: 1px solid #1e3a5f;
             border-radius: 4px;
             font-size: 0.9rem;
+            background: #000;
+            color: #e0e0e0;
         }
 
         @media (max-width: 768px) {
@@ -317,7 +357,14 @@
         </div>
         
         <div class="header">
-            <h1>MAHIKA</h1>
+            <div>
+                <img src="../images/1.png" alt="Mahika Icon" class="logo-left">
+            </div>
+            <div class="logo-container">
+                <img src="../images/2.png" alt="Mahika Designer Studio" class="logo-center">
+                <img src="../images/3.png" alt="Mahika" class="logo-right">
+                <img src="../images/4.png" alt="Mahika" class="logo-extra">
+            </div>
             <div class="header-icons">
                 <input type="text" class="search-bar" placeholder="Search products..." id="search-input" onkeyup="searchProducts()">
                 <button onclick="showWishlist()" title="Wishlist">♡ <span id="wishlist-count" style="font-size: 0.7rem;">0</span></button>
