@@ -4,330 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Store</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/wishlist.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/payment.css">
+    <link rel="stylesheet" href="css/product-detail.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            margin: 0;
-        }
-
-        .app {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
-        .announcement-bar {
-            background: #000;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #001f3f 0%, #000 100%);
-            border-bottom: 2px solid #1e3a5f;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 80px;
-        }
-
-        .header .logo-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .header .logo-left {
-            width: 90px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .header .logo-center {
-            width: 150px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .header .logo-right {
-            width: 150px;
-            height: auto;
-            object-fit: contain;
-            margin-top: 15px;
-        }
-
-        .header .logo-extra {
-            width: 110px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .header-icons button {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            position: relative;
-            color: #4a90e2;
-            transition: color 0.3s ease;
-        }
-
-        .header-icons button:hover {
-            color: #fff;
-        }
-
-        .search-bar {
-            padding: 8px 15px;
-            border: 1px solid #1e3a5f;
-            border-radius: 20px;
-            width: 250px;
-            font-size: 0.9rem;
-            background: rgba(30, 58, 95, 0.3);
-            color: #e0e0e0;
-        }
-
-        .search-bar::placeholder {
-            color: #6a8caf;
-        }
-
-        .nav {
-            background: #000;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #1e3a5f;
-        }
-
-        .nav button {
-            padding: 8px 0;
-            border: none;
-            border-bottom: 2px solid transparent;
-            background: transparent;
-            color: #6a8caf;
-            font-family: 'Arial', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.85rem;
-        }
-
-        .nav button:hover, .nav button.active {
-            color: #4a90e2;
-            border-bottom: 2px solid #4a90e2;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 40px;
-            background: #0a0a0a;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background: #000;
-            border: 1px solid #1e3a5f;
-            padding: 0;
-            transition: all 0.3s ease;
-            text-align: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .product-card:hover {
-            border-color: #4a90e2;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.2);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .product-info {
-            padding: 15px 10px;
-        }
-
-        .product-card h3 {
-            color: #e0e0e0;
-            margin: 0 0 5px 0;
-            font-size: 0.95rem;
-            font-weight: 400;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .product-card p {
-            margin: 3px 0;
-            color: #888;
-            font-size: 0.85rem;
-        }
-
-        .price {
-            font-size: 1rem !important;
-            font-weight: 600 !important;
-            color: #fff !important;
-            margin: 8px 0 !important;
-        }
-
-        .wishlist-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #1e3a5f;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #4a90e2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-        }
-
-        .add-to-cart-btn {
-            width: 100%;
-            padding: 12px;
-            background: #4a90e2;
-            color: #fff;
-            border: none;
-            font-family: 'Arial', sans-serif;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .add-to-cart-btn:hover {
-            background: #357abd;
-            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.4);
-        }
-
-        .admin-form {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .admin-form h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
-            font-size: 1.8rem;
-        }
-
-        .admin-form form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .admin-form input,
-        .admin-form select {
-            padding: 12px 15px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .admin-form input:focus,
-        .admin-form select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .admin-form button {
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .admin-form button:hover {
-            transform: translateY(-2px);
-        }
-
-        .message {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .filter-section {
-            padding: 20px 40px;
-            background: #0a0a0a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1e3a5f;
-            color: #6a8caf;
-        }
-
-        .filter-section select {
-            padding: 8px 15px;
-            border: 1px solid #1e3a5f;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            background: #000;
-            color: #e0e0e0;
-        }
-
         @media (max-width: 768px) {
             .header {
                 padding: 15px 20px;
@@ -358,12 +42,12 @@
         
         <div class="header">
             <div>
-                <img src="../images/1.png" alt="Mahika Icon" class="logo-left">
+                <img src="images/1.png" alt="Mahika Icon" class="logo-left">
             </div>
             <div class="logo-container">
-                <img src="../images/2.png" alt="Mahika Designer Studio" class="logo-center">
-                <img src="../images/3.png" alt="Mahika" class="logo-right">
-                <img src="../images/4.png" alt="Mahika" class="logo-extra">
+                <img src="images/2.png" alt="Mahika Designer Studio" class="logo-center">
+                <img src="images/3.png" alt="Mahika" class="logo-right">
+                <img src="images/4.png" alt="Mahika" class="logo-extra">
             </div>
             <div class="header-icons">
                 <input type="text" class="search-bar" placeholder="Search products..." id="search-input" onkeyup="searchProducts()">
@@ -400,14 +84,20 @@
 
         <div id="wishlist-view" class="hidden">
             <div class="admin-form">
-                <h2>♡ My Wishlist</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">♡ My Wishlist</h2>
+                    <button type="button" onclick="showProducts('all')" style="background: transparent; color: #333; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+                </div>
                 <div id="wishlist-items"></div>
             </div>
         </div>
 
         <div id="cart-view" class="hidden">
             <div class="admin-form">
-                <h2>🛒 Shopping Cart</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">🛒 Shopping Cart</h2>
+                    <button type="button" onclick="showProducts('all')" style="background: transparent; color: #333; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+                </div>
                 <div id="cart-items"></div>
                 <div id="cart-total" style="font-size: 1.2rem; font-weight: bold; margin: 20px 0;"></div>
                 <button onclick="showPayment()" id="checkout-btn" style="width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer;">Proceed to Payment</button>
@@ -446,11 +136,39 @@
             </div>
         </div>
 
+        <div id="product-detail-view" class="hidden">
+            <div style="background: #0a0a0a; padding: 40px; min-height: 100vh;">
+                <div style="max-width: 1200px; margin: 0 auto;">
+                    <button onclick="closeProductDetail()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px;">← Back to Products</button>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: #000; border: 1px solid #1e3a5f; padding: 30px;">
+                        <div>
+                            <img id="detail-main-image" style="width: 100%; height: 600px; object-fit: contain; border: 1px solid #1e3a5f; background: #000;">
+                            <div id="detail-thumbnails" style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"></div>
+                        </div>
+                        <div style="color: #e0e0e0;">
+                            <h1 id="detail-name" style="font-size: 2rem; margin-bottom: 15px;"></h1>
+                            <p id="detail-category" style="color: #4a90e2; font-size: 1.1rem; margin-bottom: 20px;"></p>
+                            <p id="detail-price" style="font-size: 2rem; font-weight: bold; color: #fff; margin-bottom: 20px;"></p>
+                            <div id="detail-sizes" style="margin-bottom: 25px;"></div>
+                            <p id="detail-stock" style="color: #888; margin-bottom: 30px;"></p>
+                            <div style="display: flex; gap: 15px;">
+                                <button id="detail-wishlist-btn" onclick="toggleWishlistFromDetail()" style="flex: 1; padding: 15px; background: rgba(74, 144, 226, 0.2); color: #4a90e2; border: 1px solid #4a90e2; border-radius: 8px; font-size: 1.1rem; cursor: pointer;"></button>
+                                <button id="detail-cart-btn" onclick="addToCartFromDetail()" style="flex: 2; padding: 15px; background: #4a90e2; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer;">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="admin-view" class="hidden">
             <div class="admin-form">
-                <h2>🛠️ Admin Panel - Add New Product</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">🛠️ Admin Panel - Add New Product</h2>
+                    <button type="button" onclick="showProducts('all')" style="background: transparent; color: #333; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+                </div>
                 <div id="message" class="message hidden"></div>
-                <form onsubmit="addProduct(event)">
+                <form onsubmit="addProduct(event)" id="admin-form">
                     <input type="text" id="name" placeholder="Product Name (e.g., Summer Floral Dress)" required>
                     <select id="category">
                         <option value="Dresses">👗 Dresses</option>
@@ -460,22 +178,23 @@
                     </select>
                     <input type="number" id="price" min="0" placeholder="Price in INR (e.g., 2999)" required>
                     <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Available Sizes:</label>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <label>Available Sizes:</label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
                             <label><input type="checkbox" name="sizes" value="S"> S</label>
                             <label><input type="checkbox" name="sizes" value="M"> M</label>
                             <label><input type="checkbox" name="sizes" value="L"> L</label>
                             <label><input type="checkbox" name="sizes" value="XL"> XL</label>
                             <label><input type="checkbox" name="sizes" value="XXL"> XXL</label>
+                            <label><input type="checkbox" name="sizes" value="Free Size"> Free Size</label>
                         </div>
                     </div>
                     <input type="number" id="stock" min="0" placeholder="Stock Quantity (e.g., 50)" required>
                     <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Product Images (Multiple):</label>
-                        <input type="file" id="imageFiles" accept="image/*" multiple style="width: 100%;" onchange="handleMultipleImages(event)">
-                        <p style="font-size: 0.85rem; color: #666; margin: 5px 0;">Upload multiple images for different views</p>
+                        <label>Product Images (Multiple):</label>
+                        <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleMultipleImages(event)">
+                        <p style="font-size: 0.85rem; color: #888; margin-top: 5px;">Upload multiple images for different views</p>
                     </div>
-                    <div id="image-preview" style="display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0;"></div>
+                    <div id="image-preview"></div>
                     <button type="submit">➕ Add Product</button>
                 </form>
             </div>
@@ -501,51 +220,223 @@
         const sampleProducts = [
             {
                 id: 1,
-                name: "Handwoven Cotton Kurta",
+                name: "Traditional Silk Saree",
                 category: "Dresses",
-                price: 1899,
-                stock: 15,
-                imageUrl: "https://via.placeholder.com/300x350/8b4513/ffffff?text=Kurta"
+                price: 3499,
+                stock: 10,
+                images: ["images/saree1.jpeg", "images/saree2.jpeg"],
+                imageUrl: "images/saree1.jpeg",
+                sizes: ["Free Size"]
             },
             {
                 id: 2,
-                name: "Silver Oxidized Earrings",
-                category: "Jewelry",
-                price: 899,
+                name: "Designer Saree Collection",
+                category: "Dresses",
+                price: 4299,
                 stock: 8,
-                imageUrl: "https://via.placeholder.com/300x350/8b4513/ffffff?text=Earrings"
+                images: ["images/saree2.jpeg", "images/saree3.jpeg"],
+                imageUrl: "images/saree2.jpeg",
+                sizes: ["Free Size"]
             },
             {
                 id: 3,
-                name: "Leather Kolhapuri Chappals",
-                category: "Shoes",
-                price: 1299,
+                name: "Elegant Saree",
+                category: "Dresses",
+                price: 3999,
                 stock: 12,
-                imageUrl: "https://via.placeholder.com/300x350/8b4513/ffffff?text=Chappals"
+                images: ["images/saree3.jpeg", "images/saree4.jpeg"],
+                imageUrl: "images/saree3.jpeg",
+                sizes: ["Free Size"]
             },
             {
                 id: 4,
-                name: "Handcrafted Jute Bag",
-                category: "Bags",
-                price: 799,
-                stock: 5,
-                imageUrl: "https://via.placeholder.com/300x350/8b4513/ffffff?text=Jute+Bag"
+                name: "Party Wear Saree",
+                category: "Dresses",
+                price: 4599,
+                stock: 6,
+                images: ["images/saree4.jpeg", "images/saree1.jpeg"],
+                imageUrl: "images/saree4.jpeg",
+                sizes: ["Free Size"]
             },
             {
                 id: 5,
-                name: "Block Print Palazzo Set",
+                name: "Designer Frock",
                 category: "Dresses",
-                price: 2299,
-                stock: 10,
-                imageUrl: "https://via.placeholder.com/300x350/8b4513/ffffff?text=Palazzo"
+                price: 2499,
+                stock: 15,
+                images: ["images/f1.jpeg", "images/f2.jpeg"],
+                imageUrl: "images/f1.jpeg",
+                sizes: ["S", "M", "L", "XL"]
             },
             {
                 id: 6,
-                name: "Brass Statement Necklace",
+                name: "Stylish Frock",
+                category: "Dresses",
+                price: 2799,
+                stock: 10,
+                images: ["images/f2.jpeg", "images/frock.jpeg"],
+                imageUrl: "images/f2.jpeg",
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 7,
+                name: "Party Frock",
+                category: "Dresses",
+                price: 2999,
+                stock: 8,
+                images: ["images/frock.jpeg", "images/frock1.jpeg"],
+                imageUrl: "images/frock.jpeg",
+                sizes: ["M", "L", "XL"]
+            },
+            {
+                id: 8,
+                name: "Elegant Frock",
+                category: "Dresses",
+                price: 2599,
+                stock: 12,
+                images: ["images/frock1.jpeg", "images/f1.jpeg"],
+                imageUrl: "images/frock1.jpeg",
+                sizes: ["S", "M", "L"]
+            },
+            {
+                id: 9,
+                name: "Gold Plated Necklace",
+                category: "Jewelry",
+                price: 1299,
+                stock: 20,
+                images: ["images/j1.jpeg", "images/j2.jpeg"],
+                imageUrl: "images/j1.jpeg",
+                sizes: []
+            },
+            {
+                id: 10,
+                name: "Silver Earrings Set",
+                category: "Jewelry",
+                price: 899,
+                stock: 25,
+                images: ["images/j2.jpeg", "images/j3.jpeg"],
+                imageUrl: "images/j2.jpeg",
+                sizes: []
+            },
+            {
+                id: 11,
+                name: "Designer Bangles",
                 category: "Jewelry",
                 price: 1599,
-                stock: 6,
-                imageUrl: "https://via.placeholder.com/300x350/8b4513/ffffff?text=Necklace"
+                stock: 15,
+                images: ["images/j3.jpeg", "images/j4.jpeg"],
+                imageUrl: "images/j3.jpeg",
+                sizes: []
+            },
+            {
+                id: 12,
+                name: "Pearl Necklace",
+                category: "Jewelry",
+                price: 2299,
+                stock: 10,
+                images: ["images/j4.jpeg", "images/j5.jpeg"],
+                imageUrl: "images/j4.jpeg",
+                sizes: []
+            },
+            {
+                id: 13,
+                name: "Traditional Jhumka",
+                category: "Jewelry",
+                price: 799,
+                stock: 30,
+                images: ["images/j5.jpeg", "images/j6.jpeg"],
+                imageUrl: "images/j5.jpeg",
+                sizes: []
+            },
+            {
+                id: 14,
+                name: "Kundan Jewelry Set",
+                category: "Jewelry",
+                price: 3499,
+                stock: 8,
+                images: ["images/j6.jpeg", "images/j7.jpeg"],
+                imageUrl: "images/j6.jpeg",
+                sizes: []
+            },
+            {
+                id: 15,
+                name: "Oxidized Jewelry",
+                category: "Jewelry",
+                price: 1099,
+                stock: 18,
+                images: ["images/j7.jpeg", "images/j8.jpeg"],
+                imageUrl: "images/j7.jpeg",
+                sizes: []
+            },
+            {
+                id: 16,
+                name: "Temple Jewelry",
+                category: "Jewelry",
+                price: 2799,
+                stock: 12,
+                images: ["images/j8.jpeg", "images/j9.jpeg"],
+                imageUrl: "images/j8.jpeg",
+                sizes: []
+            },
+            {
+                id: 17,
+                name: "Bridal Jewelry Set",
+                category: "Jewelry",
+                price: 4999,
+                stock: 5,
+                images: ["images/j9.jpeg", "images/j10.jpeg"],
+                imageUrl: "images/j9.jpeg",
+                sizes: []
+            },
+            {
+                id: 18,
+                name: "Antique Jewelry",
+                category: "Jewelry",
+                price: 3299,
+                stock: 10,
+                images: ["images/j10.jpeg", "images/j11.jpeg"],
+                imageUrl: "images/j10.jpeg",
+                sizes: []
+            },
+            {
+                id: 19,
+                name: "Stone Jewelry",
+                category: "Jewelry",
+                price: 1899,
+                stock: 15,
+                images: ["images/j11.jpeg", "images/j12.jpeg"],
+                imageUrl: "images/j11.jpeg",
+                sizes: []
+            },
+            {
+                id: 20,
+                name: "Fashion Jewelry",
+                category: "Jewelry",
+                price: 999,
+                stock: 25,
+                images: ["images/j12.jpeg", "images/j13.jpeg"],
+                imageUrl: "images/j12.jpeg",
+                sizes: []
+            },
+            {
+                id: 21,
+                name: "Party Wear Jewelry",
+                category: "Jewelry",
+                price: 2499,
+                stock: 12,
+                images: ["images/j13.jpeg", "images/j14.jpeg"],
+                imageUrl: "images/j13.jpeg",
+                sizes: []
+            },
+            {
+                id: 22,
+                name: "Elegant Jewelry Set",
+                category: "Jewelry",
+                price: 3799,
+                stock: 8,
+                images: ["images/j14.jpeg", "images/j1.jpeg"],
+                imageUrl: "images/j14.jpeg",
+                sizes: []
             }
         ];
 
@@ -614,8 +505,8 @@
                 return `
                 <div class="product-card">
                     <div style="position: relative;">
-                        <button class="wishlist-btn" onclick="toggleWishlist(${product.id})" id="wish-${product.id}">${isInWishlist ? '♥' : '♡'}</button>
-                        <img src="${mainImage || 'https://via.placeholder.com/300x400/f5f5f5/333?text=' + product.name}" alt="${product.name}" id="img-${product.id}">
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(${product.id})" id="wish-${product.id}">${isInWishlist ? '♥' : '♡'}</button>
+                        <img src="${mainImage || 'https://via.placeholder.com/300x400/f5f5f5/333?text=' + product.name}" alt="${product.name}" id="img-${product.id}" onclick="showProductDetail(${product.id})" style="cursor: pointer;">
                         ${images.length > 1 ? `
                         <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px;">
                             ${images.map((_, idx) => `<span id="dot-${product.id}-${idx}" onclick="changeImage(${product.id}, ${idx})" style="width: 10px; height: 10px; border-radius: 50%; background: ${idx === 0 ? '#4a90e2' : 'rgba(255,255,255,0.5)'}; cursor: pointer; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></span>`).join('')}
@@ -640,11 +531,85 @@
             document.getElementById('payment-view').classList.add('hidden');
             document.getElementById('profile-view').classList.add('hidden');
             document.getElementById('wishlist-view').classList.add('hidden');
+            document.getElementById('product-detail-view').classList.add('hidden');
             
             document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
             
             displayProducts();
+        }
+
+        let currentDetailProduct = null;
+
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            currentDetailProduct = product;
+            const images = Array.isArray(product.images) ? product.images : (product.images ? [product.images] : [product.imageUrl]);
+            const isInWishlist = wishlist.some(item => item.id === product.id);
+            
+            document.getElementById('products-view').classList.add('hidden');
+            document.getElementById('filter-section').style.display = 'none';
+            document.getElementById('product-detail-view').classList.remove('hidden');
+            
+            document.getElementById('detail-main-image').src = images[0];
+            document.getElementById('detail-name').textContent = product.name;
+            document.getElementById('detail-category').textContent = getCategoryEmoji(product.category) + ' ' + product.category;
+            document.getElementById('detail-price').textContent = '₹' + product.price;
+            document.getElementById('detail-stock').textContent = product.stock > 0 ? `In Stock: ${product.stock} units` : 'Out of Stock';
+            
+            const sizes = product.sizes || [];
+            if (sizes.length > 0) {
+                document.getElementById('detail-sizes').innerHTML = `
+                    <p style="margin-bottom: 10px; font-weight: 500;">Available Sizes:</p>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        ${sizes.map(size => `<span style="padding: 8px 16px; border: 1px solid #4a90e2; border-radius: 4px; color: #4a90e2;">${size}</span>`).join('')}
+                    </div>
+                `;
+            } else {
+                document.getElementById('detail-sizes').innerHTML = '';
+            }
+            
+            document.getElementById('detail-wishlist-btn').innerHTML = isInWishlist ? '♥ Remove from Wishlist' : '♡ Add to Wishlist';
+            document.getElementById('detail-cart-btn').disabled = product.stock === 0;
+            document.getElementById('detail-cart-btn').style.background = product.stock === 0 ? '#ccc' : '#4a90e2';
+            document.getElementById('detail-cart-btn').style.cursor = product.stock === 0 ? 'not-allowed' : 'pointer';
+            
+            if (images.length > 1) {
+                document.getElementById('detail-thumbnails').innerHTML = images.map((img, idx) => 
+                    `<img src="${img}" onclick="changeDetailImage(${idx})" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid ${idx === 0 ? '#4a90e2' : '#1e3a5f'};" id="thumb-${idx}">`
+                ).join('');
+            } else {
+                document.getElementById('detail-thumbnails').innerHTML = '';
+            }
+        }
+
+        function changeDetailImage(index) {
+            const images = Array.isArray(currentDetailProduct.images) ? currentDetailProduct.images : [currentDetailProduct.imageUrl];
+            document.getElementById('detail-main-image').src = images[index];
+            images.forEach((_, idx) => {
+                const thumb = document.getElementById(`thumb-${idx}`);
+                if (thumb) thumb.style.border = idx === index ? '2px solid #4a90e2' : '2px solid #1e3a5f';
+            });
+        }
+
+        function closeProductDetail() {
+            document.getElementById('product-detail-view').classList.add('hidden');
+            document.getElementById('products-view').classList.remove('hidden');
+            document.getElementById('filter-section').style.display = 'flex';
+        }
+
+        function toggleWishlistFromDetail() {
+            if (!currentDetailProduct) return;
+            toggleWishlist(currentDetailProduct.id);
+            const isInWishlist = wishlist.some(item => item.id === currentDetailProduct.id);
+            document.getElementById('detail-wishlist-btn').innerHTML = isInWishlist ? '♥ Remove from Wishlist' : '♡ Add to Wishlist';
+        }
+
+        function addToCartFromDetail() {
+            if (!currentDetailProduct || currentDetailProduct.stock === 0) return;
+            addToCart(currentDetailProduct.id);
         }
 
         function toggleWishlist(productId) {
@@ -687,17 +652,22 @@
                 return;
             }
             
-            container.innerHTML = wishlist.map(item => `
+            container.innerHTML = wishlist.map(item => {
+                const images = Array.isArray(item.images) ? item.images : (item.images ? [item.images] : [item.imageUrl]);
+                const mainImage = images[0];
+                return `
                 <div style="display: flex; gap: 15px; padding: 15px; border-bottom: 1px solid #eee; align-items: center;">
-                    <img src="${item.imageUrl}" style="width: 80px; height: 80px; object-fit: cover;">
+                    <img src="${mainImage}" onclick="showProductDetail(${item.id})" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer;">
                     <div style="flex: 1;">
-                        <h4>${item.name}</h4>
-                        <p style="color: #888;">₹${item.price}</p>
+                        <h4 onclick="showProductDetail(${item.id})" style="margin: 0 0 8px 0; color: #333; font-size: 1rem; cursor: pointer;">${item.name}</h4>
+                        <p style="margin: 0; color: #666; font-size: 0.95rem; font-weight: 600;">₹${item.price}</p>
                     </div>
-                    <button onclick="addToCart(${item.id})" style="padding: 8px 15px; background: #000; color: white; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
-                    <button onclick="toggleWishlist(${item.id}); showWishlist();" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Remove</button>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="addToCart(${item.id})" style="padding: 8px 15px; background: #4a90e2; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Add to Cart</button>
+                        <button onclick="toggleWishlist(${item.id}); showWishlist();" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Remove</button>
+                    </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function showCart() {
@@ -750,6 +720,7 @@
             document.getElementById('payment-view').classList.add('hidden');
             document.getElementById('profile-view').classList.add('hidden');
             document.getElementById('wishlist-view').classList.add('hidden');
+            document.getElementById('product-detail-view').classList.add('hidden');
             document.getElementById('admin-view').classList.remove('hidden');
         }
 
@@ -779,9 +750,7 @@
 
                 if (response.ok) {
                     showMessage('Product added successfully!', 'success');
-                    document.querySelector('form').reset();
-                    document.getElementById('image-preview').innerHTML = '';
-                    uploadedImages = [];
+                    clearAdminForm();
                     loadProducts();
                 } else {
                     throw new Error('Failed to add product');
@@ -790,12 +759,19 @@
                 // For demo purposes, add to sample data
                 product.id = Date.now();
                 products.push(product);
+                allProducts = [...products];
                 showMessage('Product added successfully! (Demo mode)', 'success');
-                document.querySelector('form').reset();
-                document.getElementById('image-preview').innerHTML = '';
-                uploadedImages = [];
+                clearAdminForm();
                 displayProducts();
             }
+        }
+
+        function clearAdminForm() {
+            document.getElementById('admin-form').reset();
+            document.getElementById('image-preview').innerHTML = '';
+            document.getElementById('imageFiles').value = '';
+            uploadedImages = [];
+            document.querySelectorAll('input[name="sizes"]:checked').forEach(cb => cb.checked = false);
         }
 
         function showMessage(text, type) {
@@ -842,13 +818,21 @@
             container.innerHTML = cart.map(item => {
                 const itemTotal = item.price * item.quantity;
                 cartTotal += itemTotal;
+                const images = Array.isArray(item.images) ? item.images : (item.images ? [item.images] : [item.imageUrl]);
+                const mainImage = images[0];
                 return `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
-                        <div>
-                            <h4>${item.name}</h4>
-                            <p>₹${item.price} x ${item.quantity}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; gap: 15px;">
+                        <img src="${mainImage}" onclick="showProductDetail(${item.id})" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer;">
+                        <div style="flex: 1;">
+                            <h4 onclick="showProductDetail(${item.id})" style="margin: 0 0 8px 0; color: #333; font-size: 1rem; cursor: pointer;">${item.name}</h4>
+                            <p style="margin: 0; color: #666; font-size: 0.9rem;">₹${item.price} × ${item.quantity} = ₹${itemTotal}</p>
                         </div>
-                        <div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                <button onclick="decreaseQuantity(${item.id})" style="background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 1rem;">-</button>
+                                <span style="padding: 5px 10px; min-width: 30px; text-align: center; font-weight: bold; color: #333;">${item.quantity}</span>
+                                <button onclick="increaseQuantity(${item.id})" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 1rem;">+</button>
+                            </div>
                             <button onclick="removeFromCart(${item.id})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Remove</button>
                         </div>
                     </div>
@@ -857,6 +841,24 @@
             
             document.getElementById('cart-total').textContent = `Total: ₹${cartTotal}`;
             document.getElementById('checkout-btn').style.display = 'block';
+        }
+
+        function increaseQuantity(productId) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += 1;
+                updateCartCount();
+                displayCart();
+            }
+        }
+
+        function decreaseQuantity(productId) {
+            const item = cart.find(item => item.id === productId);
+            if (item && item.quantity > 1) {
+                item.quantity -= 1;
+                updateCartCount();
+                displayCart();
+            }
         }
 
         function removeFromCart(productId) {
