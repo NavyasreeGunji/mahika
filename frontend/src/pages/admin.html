@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Mahika</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body style="background: #0a0a0a;">
+    <div class="admin-form">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0;">🛠️ Admin Panel - Add New Product</h2>
+            <button type="button" onclick="window.location.href='../index.html'" style="background: transparent; color: #e0e0e0; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+        </div>
+        <div id="message" class="message hidden"></div>
+        <form onsubmit="addProduct(event)" id="admin-form">
+            <input type="text" id="name" placeholder="Product Name (e.g., Summer Floral Dress)" required>
+            <select id="category">
+                <option value="Sarees">🥻 Sarees</option>
+                <option value="Dresses">👗 Dresses</option>
+                <option value="Jewelry">💎 Jewelry</option>
+                <option value="Bags">👜 Bags</option>
+            </select>
+            <input type="number" id="price" min="0" placeholder="Price in INR (e.g., 2999)" required>
+            <div>
+                <label>Available Sizes:</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
+                    <label><input type="checkbox" name="sizes" value="S"> S</label>
+                    <label><input type="checkbox" name="sizes" value="M"> M</label>
+                    <label><input type="checkbox" name="sizes" value="L"> L</label>
+                    <label><input type="checkbox" name="sizes" value="XL"> XL</label>
+                    <label><input type="checkbox" name="sizes" value="XXL"> XXL</label>
+                    <label><input type="checkbox" name="sizes" value="Free Size"> Free Size</label>
+                </div>
+            </div>
+            <input type="number" id="stock" min="0" placeholder="Stock Quantity (e.g., 50)" required>
+            <div>
+                <label>Product Images (Multiple):</label>
+                <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleMultipleImages(event)">
+                <p style="font-size: 0.85rem; color: #888; margin-top: 5px;">Upload multiple images for different views</p>
+            </div>
+            <div id="image-preview"></div>
+            <button type="submit">➕ Add Product</button>
+        </form>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'admin123';
+        let uploadedImages = [];
+
+        // Check admin password
+        const isAdmin = sessionStorage.getItem('isAdmin');
+        if (!isAdmin) {
+            const password = prompt('🔒 Admin Access Required\n\nEnter admin password:');
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('isAdmin', 'true');
+            } else {
+                alert('Incorrect password! Access denied.');
+                window.location.href = '../index.html';
+            }
+        }
+
+        function handleMultipleImages(event) {
+            const files = event.target.files;
+            uploadedImages = [];
+            document.getElementById('image-preview').innerHTML = '';
+            
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImages.push(e.target.result);
+                    const imgDiv = document.createElement('div');
+                    imgDiv.style.cssText = 'position: relative;';
+                    imgDiv.innerHTML = `
+                        <img src="${e.target.result}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid #4a90e2;">
+                        <span style="position: absolute; top: -5px; right: -5px; background: #4a90e2; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">${index + 1}</span>
+                    `;
+                    document.getElementById('image-preview').appendChild(imgDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function addProduct(event) {
+            event.preventDefault();
+            
+            const selectedSizes = Array.from(document.querySelectorAll('input[name="sizes"]:checked')).map(cb => cb.value);
+            
+            const product = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                category: document.getElementById('category').value,
+                price: parseInt(document.getElementById('price').value),
+                stock: parseInt(document.getElementById('stock').value),
+                sizes: selectedSizes,
+                images: uploadedImages.length > 0 ? uploadedImages : ['https://via.placeholder.com/300x350'],
+                imageUrl: uploadedImages[0] || 'https://via.placeholder.com/300x350'
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/api/products', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(product)
+                });
+
+                if (response.ok) {
+                    showMessage('Product added successfully!', 'success');
+                    clearForm();
+                } else {
+                    throw new Error('Failed to add product');
+                }
+            } catch (error) {
+                // Save to localStorage
+                let customProducts = JSON.parse(localStorage.getItem('customProducts')) || [];
+                customProducts.push(product);
+                localStorage.setItem('customProducts', JSON.stringify(customProducts));
+                
+                showMessage('Product added successfully!', 'success');
+                clearForm();
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('admin-form').reset();
+            document.getElementById('image-preview').innerHTML = '';
+            uploadedImages = [];
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

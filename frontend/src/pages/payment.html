@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Mahika</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body style="background: #0a0a0a;">
+    <div class="admin-form">
+        <h2 style="color: #e0e0e0;">💳 Payment</h2>
+        <form onsubmit="processPayment(event)">
+            <input type="text" id="fullname" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <div style="display: flex; gap: 10px; margin: 15px 0;">
+                <button type="button" onclick="selectPayment('phonepe')" id="phonepe-btn" style="flex: 1; padding: 15px; background: #5f259f; color: white; border: none; border-radius: 8px; cursor: pointer;">📱 PhonePe</button>
+                <button type="button" onclick="selectPayment('googlepay')" id="googlepay-btn" style="flex: 1; padding: 15px; background: #4285f4; color: white; border: none; border-radius: 8px; cursor: pointer;">🌐 Google Pay</button>
+            </div>
+            <input type="text" id="upi-id" placeholder="Enter UPI ID (e.g., user@phonepe)" required style="display: none;">
+            <div id="payment-total" style="font-size: 1.2rem; font-weight: bold; margin: 15px 0; color: #e0e0e0;"></div>
+            <button type="submit" id="pay-btn" style="width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; display: none;">Pay with UPI</button>
+        </form>
+    </div>
+
+    <script>
+        let selectedPaymentMethod = '';
+        const cartTotal = localStorage.getItem('cartTotal') || 0;
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        document.getElementById('payment-total').textContent = `Total: ₹${cartTotal}`;
+
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            document.getElementById('phonepe-btn').style.background = method === 'phonepe' ? '#5f259f' : '#ccc';
+            document.getElementById('googlepay-btn').style.background = method === 'googlepay' ? '#4285f4' : '#ccc';
+            document.getElementById('upi-id').style.display = 'block';
+            document.getElementById('pay-btn').style.display = 'block';
+        }
+
+        async function processPayment(event) {
+            event.preventDefault();
+            
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            const customerName = document.getElementById('fullname').value;
+            const customerEmail = document.getElementById('email').value;
+            const upiId = document.getElementById('upi-id').value;
+            
+            // Save user profile
+            localStorage.setItem('userProfile', JSON.stringify({
+                name: customerName,
+                email: customerEmail
+            }));
+            
+            const orderData = {
+                customerName,
+                customerEmail,
+                paymentMethod: selectedPaymentMethod.toUpperCase(),
+                upiId,
+                totalAmount: cartTotal,
+                items: cart.map(item => ({
+                    productName: item.name,
+                    category: item.category,
+                    price: item.price,
+                    quantity: item.quantity
+                }))
+            };
+            
+            try {
+                await fetch('http://localhost:8080/api/orders', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(orderData)
+                });
+            } catch (error) {
+                console.log('Backend not available');
+            }
+            
+            alert(`Payment successful via ${selectedPaymentMethod.toUpperCase()}! Thank you for shopping with Mahika!`);
+            localStorage.removeItem('cart');
+            localStorage.removeItem('cartTotal');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html>

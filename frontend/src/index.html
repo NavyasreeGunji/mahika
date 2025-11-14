@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Store</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/wishlist.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/payment.css">
+    <link rel="stylesheet" href="css/product-detail.css">
+    <style>
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .nav {
+                padding: 15px 20px;
+                gap: 20px;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div id="announcement-container"></div>
+        <div id="header-container"></div>
+        <div id="nav-container"></div>
+        <div id="filter-container"></div>
+
+        <div id="products-view">
+            <div class="products" id="products-container">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <div id="wishlist-view" class="hidden">
+            <div class="admin-form">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">♡ My Wishlist</h2>
+                    <button type="button" onclick="showProducts('all')" style="background: transparent; color: #333; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+                </div>
+                <div id="wishlist-items"></div>
+            </div>
+        </div>
+
+        <div id="cart-view" class="hidden">
+            <div class="admin-form">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">🛒 Shopping Cart</h2>
+                    <button type="button" onclick="showProducts('all')" style="background: transparent; color: #333; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+                </div>
+                <div id="cart-items"></div>
+                <div id="cart-total" style="font-size: 1.2rem; font-weight: bold; margin: 20px 0;"></div>
+                <button onclick="showPayment()" id="checkout-btn" style="width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer;">Proceed to Payment</button>
+            </div>
+        </div>
+
+        <div id="payment-view" class="hidden">
+            <div class="admin-form">
+                <h2>💳 Payment</h2>
+                <button type="button" onclick="showProducts('all')" style="background: white; color: black; border: 2px solid black; padding: 10px 20px; cursor: pointer; font-size: 1rem; border-radius: 5px; font-weight: bold; margin-bottom: 20px; display: block;">CLOSE</button>
+                <form onsubmit="processPayment(event)">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <div style="display: flex; gap: 10px; margin: 15px 0;">
+                        <button type="button" onclick="selectPayment('phonepe')" id="phonepe-btn" style="flex: 1; padding: 15px; background: #5f259f; color: white; border: none; border-radius: 8px; cursor: pointer;">📱 PhonePe</button>
+                        <button type="button" onclick="selectPayment('googlepay')" id="googlepay-btn" style="flex: 1; padding: 15px; background: #4285f4; color: white; border: none; border-radius: 8px; cursor: pointer;">🌐 Google Pay</button>
+                    </div>
+                    <input type="text" id="upi-id" placeholder="Enter UPI ID (e.g., user@phonepe)" required style="display: none;">
+                    <div id="payment-total" style="font-size: 1.2rem; font-weight: bold; margin: 15px 0;"></div>
+                    <button type="submit" id="pay-btn" style="width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; display: none;">Pay with UPI</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="profile-view" class="hidden">
+            <div class="admin-form">
+                <h2>👤 My Profile</h2>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 80px; height: 80px; background: #667eea; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white;">👤</div>
+                    <h3 id="profile-name">Guest User</h3>
+                    <p id="profile-email">guest@mahika.com</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3>📋 Previous Orders</h3>
+                    <div id="order-history"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="product-detail-view" class="hidden">
+            <div style="background: #0a0a0a; padding: 40px; min-height: 100vh;">
+                <div style="max-width: 1200px; margin: 0 auto;">
+                    <button onclick="closeProductDetail()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px;">← Back to Products</button>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: #000; border: 1px solid #1e3a5f; padding: 30px;">
+                        <div>
+                            <img id="detail-main-image" style="width: 100%; height: 600px; object-fit: contain; border: 1px solid #1e3a5f; background: #000;">
+                            <div id="detail-thumbnails" style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"></div>
+                        </div>
+                        <div style="color: #e0e0e0;">
+                            <h1 id="detail-name" style="font-size: 2rem; margin-bottom: 15px;"></h1>
+                            <p id="detail-category" style="color: #4a90e2; font-size: 1.1rem; margin-bottom: 20px;"></p>
+                            <p id="detail-price" style="font-size: 2rem; font-weight: bold; color: #fff; margin-bottom: 20px;"></p>
+                            <div id="detail-sizes" style="margin-bottom: 25px;"></div>
+                            <p id="detail-stock" style="color: #888; margin-bottom: 30px;"></p>
+                            <div style="display: flex; gap: 15px;">
+                                <button id="detail-wishlist-btn" onclick="toggleWishlistFromDetail()" style="flex: 1; padding: 15px; background: rgba(74, 144, 226, 0.2); color: #4a90e2; border: 1px solid #4a90e2; border-radius: 8px; font-size: 1.1rem; cursor: pointer;"></button>
+                                <button id="detail-cart-btn" onclick="addToCartFromDetail()" style="flex: 2; padding: 15px; background: #4a90e2; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer;">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-view" class="hidden">
+            <div class="admin-form">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0;">🛠️ Admin Panel - Add New Product</h2>
+                    <button type="button" onclick="showProducts('all')" style="background: transparent; color: #333; border: none; padding: 5px; cursor: pointer; font-size: 1.5rem; line-height: 1;">×</button>
+                </div>
+                <div id="message" class="message hidden"></div>
+                <form onsubmit="addProduct(event)" id="admin-form">
+                    <input type="text" id="name" placeholder="Product Name (e.g., Summer Floral Dress)" required>
+                    <select id="category">
+                        <option value="Dresses">👗 Dresses</option>
+                        <option value="Jewelry">💎 Jewellery</option>
+                        <option value="Shoes">👠 Shoes</option>
+                        <option value="Bags">👜 Bags</option>
+                    </select>
+                    <input type="number" id="price" min="0" placeholder="Price in INR (e.g., 2999)" required>
+                    <div>
+                        <label>Available Sizes:</label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
+                            <label><input type="checkbox" name="sizes" value="S"> S</label>
+                            <label><input type="checkbox" name="sizes" value="M"> M</label>
+                            <label><input type="checkbox" name="sizes" value="L"> L</label>
+                            <label><input type="checkbox" name="sizes" value="XL"> XL</label>
+                            <label><input type="checkbox" name="sizes" value="XXL"> XXL</label>
+                            <label><input type="checkbox" name="sizes" value="Free Size"> Free Size</label>
+                        </div>
+                    </div>
+                    <input type="number" id="stock" min="0" placeholder="Stock Quantity (e.g., 50)" required>
+                    <div>
+                        <label>Product Images (Multiple):</label>
+                        <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleMultipleImages(event)">
+                        <p style="font-size: 0.85rem; color: #888; margin-top: 5px;">Upload multiple images for different views</p>
+                    </div>
+                    <div id="image-preview"></div>
+                    <button type="submit">➕ Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component Loader: Use inline for no-server, or component-loader.js when backend is ready -->
+    <script src="js/component-loader-inline.js"></script>
+    <!-- <script src="js/component-loader.js"></script> -->
+    <script src="js/data/products.js"></script>
+    <script src="js/services/wishlist.js"></script>
+    <script src="js/services/cart.js"></script>
+    <script src="js/services/profile.js"></script>
+    <script src="js/services/admin.js"></script>
+    <script src="js/services/payment.js"></script>
+    <script src="js/services/product-detail.js"></script>
+    <script src="js/services/products.js"></script>
+    <script>
+        const API_URL = 'http://localhost:8080/api/products';
+        let products = [];
+
+        async function loadProducts() {
+            try {
+                const response = await fetch(API_URL);
+                products = await response.json();
+            } catch (error) {
+                console.log('Using sample data - backend not available');
+                products = sampleProducts;
+            }
+            
+            const customProducts = JSON.parse(localStorage.getItem('customProducts')) || [];
+            products = [...products, ...customProducts];
+            displayProducts();
+            
+            const viewProductId = localStorage.getItem('viewProductId');
+            if (viewProductId) {
+                localStorage.removeItem('viewProductId');
+                showProductDetail(parseInt(viewProductId));
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Load components then initialize the app
+        loadAllComponents().then(() => {
+            loadProducts();
+            updateCartCount();
+            updateWishlistCount();
+        });
+    </script>
+</body>
+</html>
