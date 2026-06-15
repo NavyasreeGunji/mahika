@@ -145,3 +145,12 @@
 .message.hidden {
     display: none;
 }
+
+@media (max-width: 768px) {
+    .admin-form {
+        margin: 16px;
+        padding: 20px 16px;
+    }
+
+    .admin-form h2 { font-size: 1.4rem; }
+}
