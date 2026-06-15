@@ -11,12 +11,17 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService service;
-    
+
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
         return service.createOrder(order);
     }
-    
+
+    @GetMapping
+    public List<Order> getAllOrders() {
+        return service.getAllOrders();
+    }
+
     @GetMapping("/email/{email}")
     public List<Order> getOrdersByEmail(@PathVariable String email) {
         return service.getOrdersByEmail(email);
