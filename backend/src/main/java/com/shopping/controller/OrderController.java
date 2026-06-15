@@ -1,6 +1,7 @@
 package com.shopping.controller;
 
 import com.shopping.model.Order;
+import com.shopping.service.EmailService;
 import com.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,14 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService service;
+
+    @Autowired
+    private EmailService emailService;
+
+    @GetMapping("/test-email")
+    public String testEmail() {
+        return emailService.sendTestEmail();
+    }
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {

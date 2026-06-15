@@ -16,6 +16,19 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String toEmail;
 
+    public String sendTestEmail() {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(toEmail);
+            message.setSubject("Mahika Email Test ✓");
+            message.setText("Email service is working correctly.\n\n— Mahika Designer Studio");
+            mailSender.send(message);
+            return "Email sent successfully to " + toEmail;
+        } catch (Exception e) {
+            return "Email failed: " + e.getMessage();
+        }
+    }
+
     public void sendOrderNotification(Order order) {
         try {
             StringBuilder items = new StringBuilder();
