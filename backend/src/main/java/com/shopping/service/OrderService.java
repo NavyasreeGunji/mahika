@@ -18,9 +18,11 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         order.setOrderDate(LocalDateTime.now());
-        order.setStatus("Completed");
-        for (OrderItem item : order.getItems()) {
-            item.setOrder(order);
+        order.setStatus("Pending");
+        if (order.getItems() != null) {
+            for (OrderItem item : order.getItems()) {
+                item.setOrder(order);
+            }
         }
         Order saved = repository.save(order);
         emailService.sendOrderNotification(saved);

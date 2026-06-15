@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { API_BASE } from '../config';
 
-export default function PaymentView({ total, onPaymentSuccess, onClose, onUpdateProfile }) {
+export default function PaymentView({ cart, total, onPaymentSuccess, onClose, onUpdateProfile }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [method, setMethod] = useState('');
@@ -19,6 +19,12 @@ export default function PaymentView({ total, onPaymentSuccess, onClose, onUpdate
       paymentMethod: method.toUpperCase(),
       upiId: method === 'cod' ? '' : upiId,
       totalAmount: total,
+      items: (cart || []).map(item => ({
+        productName: item.name,
+        category: item.category,
+        price: item.price,
+        quantity: item.quantity,
+      })),
     };
 
     try {

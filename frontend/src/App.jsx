@@ -215,6 +215,7 @@ export default function App() {
 
       {currentView === 'payment' && (
         <PaymentView
+          cart={cart}
           total={cart.reduce((sum, item) => sum + item.price * item.quantity, 0)}
           onPaymentSuccess={handlePaymentSuccess}
           onClose={() => setCurrentView('products')}
