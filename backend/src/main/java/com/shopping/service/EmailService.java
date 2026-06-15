@@ -15,7 +15,7 @@ public class EmailService {
     @Value("${resend.api.key:}")
     private String apiKey;
 
-    @Value("${spring.mail.username:mahikadesignerstudio@gmail.com}")
+    @Value("${admin.email:mahikadesignerstudio@gmail.com}")
     private String toEmail;
 
     private static final String FROM = "Mahika Designer Studio <onboarding@resend.dev>";
